@@ -98,7 +98,7 @@ public class BoardController {
 					}
 				}
 			}
-			mv.setViewName("redirect:/index.jsp");
+			mv.setViewName("redirect:/board/list.eansoft");
 		} catch (Exception e) {
 			mv.addObject("msg", e.toString());
 			mv.setViewName("common/errorPage");
@@ -150,7 +150,7 @@ public class BoardController {
 			// 디비에 해당 데이터 저장
 			int result = bService.modifyBoard(board);
 			if (result > 0) {
-				mv.setViewName("redirect:/board/list.ean");
+				mv.setViewName("redirect:/board/list.eansoft");
 			} else {
 				// 실패
 				mv.addObject("msg", "공지사항 수정 실패");
@@ -169,7 +169,7 @@ public class BoardController {
 		try {
 		int result = bService.removeBoard(boardNo);
 			if(result > 0) {
-				mv.setViewName("redirect:/board/list.ean");
+				mv.setViewName("redirect:/board/list.eansoft");
 			}else {
 				mv.addObject("msg", "게시글 삭제 실패");
 				mv.setViewName("/common/errorPage");
@@ -190,15 +190,15 @@ public class BoardController {
 			int totalCount = bService.boardListCount();
 			PageInfo pi = Pagination.getPageInfo(currentPage, totalCount);
 			List<Board> bList = bService.allBoardList(pi);
-			System.out.println(bList);
 			if (!bList.isEmpty()) {
 				mv.addObject("bList", bList);
 				mv.addObject("pi", pi);
 				mv.addObject("listType","basicList");
 				mv.setViewName("/board/boardList");
 			} else {
-				mv.addObject("msg", "게시판 조회 실패");
-				mv.setViewName("/common/errorPage");
+				mv.addObject("msg", "게시글이 없습니다.");
+				mv.addObject("listType","basicList");
+				mv.setViewName("/board/boardList");
 			}
 		} catch (Exception e) {
 			mv.addObject("msg", e.toString());
@@ -242,8 +242,9 @@ public class BoardController {
 				mv.addObject("listType","searchList");
 				mv.setViewName("/board/boardList");
 			} else {
-				mv.addObject("msg", "검색 조회 실패");
-				mv.setViewName("/common/errorPage");
+				mv.addObject("msg", "검색된 결과가 없습니다.");
+				mv.addObject("listType","searchList");
+				mv.setViewName("/board/boardList");
 			}
 		} catch (Exception e) {
 			mv.addObject("msg", e.toString());
@@ -288,5 +289,42 @@ public class BoardController {
         workbook.close();
 		
 	}
+	
+	//엑셀 파일 다운로드
+		@RequestMapping(value = "/download/boardSearchList.eansoft", method = RequestMethod.GET)
+		public void downloadSearchExcel(HttpServletResponse response,@ModelAttribute Search search,
+				@RequestParam(value = "page", required = false) Integer page) throws IOException {
+			Workbook workbook = new HSSFWorkbook();
+			Sheet sheet = workbook.createSheet("게시판 전체 목록");
+			int rowNo = 0;
+			
+			Row headerRow = sheet.createRow(rowNo++);
+			headerRow.createCell(0).setCellValue("번호");
+			headerRow.createCell(1).setCellValue("종류");
+			headerRow.createCell(2).setCellValue("작성자");
+			headerRow.createCell(3).setCellValue("제목");
+			headerRow.createCell(4).setCellValue("내용");
+			headerRow.createCell(5).setCellValue("작성일");
+			headerRow.createCell(6).setCellValue("첨부파일 개수");
+			
+			List<Board> searchList = bService.boardSearchList(search);
+			for(Board board : searchList) {
+				Row row = sheet.createRow(rowNo++);
+				row.createCell(0).setCellValue(board.getBoardNo());
+				row.createCell(1).setCellValue(board.getBoardTypeName());
+				row.createCell(2).setCellValue(board.getMemberId());
+				row.createCell(3).setCellValue(board.getBoardTitle());
+				row.createCell(4).setCellValue(board.getBoardContents());
+				row.createCell(5).setCellValue(board.getWriteDate());
+				row.createCell(6).setCellValue(board.getBoardFileCount());
+			}
+			
+			response.setContentType("ms-vnd/excel");
+	        response.setHeader("Content-Disposition", "attachment;filename=boardlist.xls");
+	 
+	        workbook.write(response.getOutputStream());
+	        workbook.close();
+			
+		}
 	
 }

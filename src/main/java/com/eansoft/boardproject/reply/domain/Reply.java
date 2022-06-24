@@ -13,8 +13,8 @@ public class Reply {
 	private int replyDepth;
 	private String memberId;
 	private String replyContents;
-	private Date writeDate;
-	private Date updateDate;
+	private String writeDate;
+	private String updateDate;
 	private String replyStatus;
 	private Member member;
 	
@@ -76,19 +76,19 @@ public class Reply {
 		this.replyContents = replyContents;
 	}
 
-	public Date getWriteDate() {
+	public String getWriteDate() {
 		return writeDate;
 	}
 
-	public void setWriteDate(Date writeDate) {
+	public void setWriteDate(String writeDate) {
 		this.writeDate = writeDate;
 	}
 
-	public Date getUpdateDate() {
+	public String getUpdateDate() {
 		return updateDate;
 	}
 
-	public void setUpdateDate(Date updateDate) {
+	public void setUpdateDate(String updateDate) {
 		this.updateDate = updateDate;
 	}
 
@@ -116,6 +116,6 @@ public class Reply {
 				+ ", replyStatus=" + replyStatus + ", member=" + member + "]";
 	}
 
-	
+
 	
 }

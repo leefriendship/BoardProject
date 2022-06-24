@@ -43,7 +43,7 @@ public class BoardStoreLogic implements BoardStore{
 		int currentPage = pi.getCurrentPage();
 		int offset = (currentPage - 1) * limit;
 		RowBounds rowBounds = new RowBounds(offset, limit);
-		List<Board> bList = sqlSession.selectList("BoardMapper.selectBoardList",rowBounds);
+		List<Board> bList = sqlSession.selectList("BoardMapper.selectBoardList",pi,rowBounds);
 		return bList;
 	}
 
@@ -84,7 +84,13 @@ public class BoardStoreLogic implements BoardStore{
 		List<Board> searchList = sqlSession.selectList("BoardMapper.boardSearchList",search,rowBounds);
 		return searchList;
 	}
-
+	@Override
+	public List<Board> boardSearchList(SqlSession sqlSession, Search search) {
+		List<Board> searchList = sqlSession.selectList("BoardMapper.boardSearchList",search);
+		return searchList;
+	}
+		
+	
 	//검색 게시물 개수 구하기
 	@Override
 	public int selectBoardSearchListCount(SqlSession sqlSession, Search search) {

@@ -76,6 +76,11 @@ public class BoardServiceImpl implements BoardService{
 		List<Board> searchList = bStore.boardSearchList(sqlSession,search,pi);
 		return searchList;
 	}
+	@Override
+	public List<Board> boardSearchList(Search search) {
+		List<Board> searchList = bStore.boardSearchList(sqlSession,search);
+		return searchList;
+	}
 
 	//검색 게시물 개수 구하기
 	@Override
@@ -111,6 +116,7 @@ public class BoardServiceImpl implements BoardService{
 		int result = bStore.deleteBoard(sqlSession, boardNo);
 		return result;
 	}
+
 	
 	
 	

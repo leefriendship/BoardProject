@@ -39,6 +39,7 @@ public interface BoardStore {
 
 	//검색 조회
 	List<Board> boardSearchList(SqlSession sqlSession, Search search,PageInfo pi);
+	List<Board> boardSearchList(SqlSession sqlSession, Search search);
 
 	//검색된 게시물 개수 구하기
 	int selectBoardSearchListCount(SqlSession sqlSession, Search search);

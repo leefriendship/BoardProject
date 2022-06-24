@@ -30,7 +30,6 @@
 </c:if>
 </h3>
 <button type="button" onclick="location.href='/logout.eansoft'">로그아웃</button>
-<button type="button" onclick="location.href='/write/boardPage.eansoft'">게시글 작성</button>
 </div>
 </c:if>
 </body>

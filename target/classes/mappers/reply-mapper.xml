@@ -35,7 +35,7 @@
 		UPDATE BOARD_REPLY_TBL SET REPLY_STATUS='N' WHERE BOARD_REPLY_NO = #{replyNo}
 </update>
 <update id="updateReply">
-		UPDATE BOARD_REPLY_TBL SET REPLY_CONTENTS = #{replyContents} WHERE BOARD_REPLY_NO = #{replyNo}
+		UPDATE BOARD_REPLY_TBL SET REPLY_CONTENTS = #{replyContents}, UPDATE_DATE = SYSDATE WHERE BOARD_REPLY_NO = #{replyNo}
 </update>
 
 

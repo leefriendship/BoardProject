@@ -33,7 +33,8 @@ public interface BoardService {
 
 	//검색 조회
 	List<Board> boardSearchList(Search search,PageInfo pi);
-
+	List<Board> boardSearchList(Search search);
+	
 	//검색 게시물 개수 구하기
 	int boardSearchListCount(Search search);
 
@@ -45,6 +46,8 @@ public interface BoardService {
 
 	//게시글 삭제(비활성화)ㄹ
 	int removeBoard(int boardNo);
+
+
 	
 	
 

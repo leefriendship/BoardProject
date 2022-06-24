@@ -2,14 +2,19 @@
 	pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/views/include/inc_head.jsp" %>
 <!-- board CSS -->
-<link rel="stylesheet" href="../../resources/css/board.css">
+<link rel="stylesheet" href="../../resources/css/board.css?after">
 </head>
 <body>
 <%@ include file="/WEB-INF/views/include/inc_header.jsp" %>
 <div id="conts">
 	<h2 class="square-tit mt-40">게시판</h2>
-	<button onclick="location.href='/write/boardPage.eansoft';">글쓰기</button>
-	<button onclick="location.href='/download/boardList.eansoft';">글목록 다운로드</button>
+	<div class="boardbtn">
+	<button  onclick="viewWriteBoardPage()">글쓰기</button>
+	<button  onclick="downloadBoardList()">글 목록 다운로드</button>
+	<c:if test="${listType eq 'searchList'}">
+	<button  onclick="downloadBoardSearchList()">검색한 글 목록 다운로드</button>
+	</c:if>
+	</div>
 	<!-- 검색 -->
    <form class="form--srch" action="/board/searchList.eansoft" method="get">
 		<input type="hidden" name="currentPage" value="1"> 
@@ -22,8 +27,16 @@
 		</select> <input type="text" name="searchValue" placeholder="게시판검색">
 		<button type="submit"></button>
 	</form>
-	
 	<table class="table--basic">
+		<colgroup>
+            <col style="width:7%;">
+            <col style="width:7%;">
+            <col style="width:32%;">
+            <col style="width:10%;">
+            <col style="width:20%;">
+            <col style="width:9%;">
+            <col style="width:10%;">
+        </colgroup>
 		<thead>
 			<tr>
 				<th>번호</th>
@@ -35,22 +48,41 @@
 				<th>첨부파일</th>
 		</thead>
 		<tbody>
+			<c:if test="${not empty bList}">
 			<c:forEach var="board" items="${bList }">
-				<tr>
-					<c:url var="bDetail" value="/board/detail.eansoft">
+				<tr class="pointer" onclick="viewDetailPage(${board.boardNo })">
+					<%-- <c:url var="bDetail" value="/board/detail.eansoft">
 						<c:param name="boardNo" value="${board.boardNo }"></c:param>
-					</c:url>
+					</c:url> --%>
 					<td>${board.boardNo }</td>
 					<td>${board.boardTypeName }</td>
-					<td><a href="${bDetail }">${board.boardTitle }</td>
-					<td>${board.member.memberName }</td>
+					<td>${board.boardTitle }</td>
+					<td>${board.memberId }</td>
 					<td>${board.writeDate }</td>
 					<td>${board.boardCount }</td>
 					<td>${board.boardFileCount }개</td>
 				</tr>
 			</c:forEach>
+			</c:if>
+			 <c:if test="${listType eq 'basicList' && empty bList}">
+                    <tr>
+                    	<td colspan="7" class="t-c"> ${msg } </td>
+                    </tr>
+             </c:if>
+             <c:if test="${listType eq 'searchList' && empty bList}">
+                    <tr>
+                    	<td colspan="7" class="t-c"> ${msg }</td>
+                    </tr>
+             </c:if>
+             
 		</tbody>
 	</table>
+	
+	
+	
+	
+	
+	
 	
 	<c:if test="${listType eq 'basicList'}">
 	<div class="btns--paging">
@@ -71,7 +103,7 @@
    </div>
 	</c:if>
 	
-	<c:if test="${listType eq 'searchList'}">
+	<c:if test="${listType eq 'searchList' && not empty bList}">
 	<div class="btns--paging">
       <button class="fa-solid fa-angles-left first"
       <c:if test="${pi.currentPage > '1' }"> onclick="location.href='/board/searchList.eansoft?page=${pi.startNavi }&searchCondition=${search.searchCondition }&searchValue=${search.searchValue }'"</c:if>></button>
@@ -103,6 +135,45 @@
        $(".btns--paging a:nth-of-type(" + pageNo + ")").addClass("on");
    } else {
        $(".btns--paging a:nth-of-type(1)").addClass("on");
+   }
+   
+   function viewDetailPage(boardNo){
+	   var loginId = "<%=(String)session.getAttribute("memberId")%>";
+	   if(loginId=="null"){
+   		   alert("로그인이 필요합니다.");
+   			location.href=("/index.jsp");
+   		}else{
+   			location.href=("/board/detail.eansoft?boardNo="+boardNo);
+   		}
+	   } 
+   
+   function viewWriteBoardPage(){
+	   var loginId = "<%=(String)session.getAttribute("memberId")%>";
+	   if(loginId=="null"){
+   		   alert("로그인이 필요합니다.");
+   		}else{
+   			location.href=("/write/boardPage.eansoft");
+   		}
+   }
+   
+   function downloadBoardList(){
+	   var loginId = "<%=(String)session.getAttribute("memberId")%>";
+	   if(loginId=="null"){
+   		   alert("로그인이 필요합니다.");
+   		}else{
+   			location.href=("/download/boardList.eansoft");
+   		}
+   }
+   
+   function downloadBoardSearchList(){
+	   var loginId = "<%=(String)session.getAttribute("memberId")%>";
+	   var searchCondition = "${search.searchCondition}";
+	   var searchValue = "${search.searchValue}";
+	   if(loginId=="null"){
+   		   alert("로그인이 필요합니다.");
+   		}else{
+   			location.href=("/download/boardSearchList.eansoft?searchCondition="+searchCondition+"&searchValue="+searchValue);
+   		}
    }
    </script>
 </body>

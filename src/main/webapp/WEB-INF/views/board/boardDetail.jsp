@@ -7,6 +7,7 @@
 <body>
 	<%@ include file="/WEB-INF/views/include/inc_header.jsp"%>
 	<div id="conts">
+	<button onclick="history.back(-1);">목록</button>
 		<div id="boardTop">
 			<div class="board-btn-div">
 				<c:url var="bModify" value="/board/modifyPage.eansoft">
@@ -26,7 +27,7 @@
 							<p>
 								확인을 누르시면<br> 게시글이 삭제됩니다. 삭제하시겠습니까?
 							</p>
-
+							<br>
 							<div class="btns-wrap mt-20">
 
 								<button class="point" type="button"
@@ -35,6 +36,7 @@
 							</div>
 						</div>
 					</section>
+					
 					<button class="board-detail-btn"
 						onclick="location.href='${bModify }'">수정하기</button>
 				</c:if>
@@ -46,12 +48,12 @@
 					<img
 						src="../../../resources/uploadFiles/${board.member.memberPhoto}"
 						alt="프로필사진"
-						style="width: 30px; height: auto; vertical-align: middle;">${board.member.memberName }</div>
+						style="width: 30px; height: auto; vertical-align: middle;">${board.memberId }</div>
 			</c:if>
 			<c:if test="${board.member.memberPhoto eq null}">
 				<div class="write-div">
 					<img src="../../../resources/img/img_no_profile.png" alt="프로필사진"
-						style="width: 30px; height: auto; vertical-align: middle;">${board.member.memberName }</div>
+						style="width: 30px; height: auto; vertical-align: middle;">${board.memberId }</div>
 			</c:if>
 			<div class="write-div">${board.writeDate }</div>
 			<div id="attached-file-div">
@@ -70,7 +72,7 @@
 		</div>
 		<div id="reply-div">					
 			<div>
-				<span>${sessionScope.memberName}</span>
+				<span>${sessionScope.memberId}</span>
 				<textarea id="rContents" maxlength="500" placeholder="댓글을 입력해 주세요."></textarea>
 			</div>
 			<div><button id="rSubmit">댓글 작성</button></div>
@@ -156,7 +158,7 @@ $('body,html').keydown(function (e) {
 					$tableBody.html(""); 
 					var $trCount = $("<tr>");
 					
-					var $tdCount = $("<div id='board-bottom-div2'>").html("&nbsp&nbsp&nbsp&nbsp<img src='../../../../resources/images/icons/reply.png' style='width:15px; height:auto; vertical-align: middle;'/>&nbsp&nbsp<b>댓글  " + count + "개</b></div>");
+					var $tdCount = $("<div id='board-bottom-div2'>").html("&nbsp&nbsp&nbsp&nbsp<img src='../../../../resources/img/reply.png' style='width:15px; height:auto; vertical-align: middle;'/>&nbsp&nbsp<b>댓글  " + count + "개</b></div>");
 					
 					
 					
@@ -172,7 +174,8 @@ $('body,html').keydown(function (e) {
 						var $rContent 	 = $("<td width='250' colspan='2' class='rContent'>").text(data[i].replyContents);
 						var $deleteMsg 	 = $("<td width='250' colspan='4' class='rContent'>").text('삭제된 댓글 입니다.');
 						var $reContent 	 = $("<td width='250' colspan='2' class='rContent' >").text(data[i].replyContents);
-						var $rCreateDate = $("<td class='t-c' width='150'>").text(data[i].writeDate);
+						var $rCreateDate = $("<td class='t-c' width='200'>").text(data[i].writeDate);
+						var $rUpdateDate = $("<td class='t-c' width='200'>").text(data[i].updateDate);
 						var $btnArea 	 = $("<td class='t-c' width='150'>")
 											.append("<a href='javascript:void(0)' onclick='modReplyView(this, "+data[i].replyNo+", \""+data[i].replyContents+"\");'>수정</a> ")
 											.append("<a href='javascript:void(0)' onclick='removeReply("+data[i].replyNo+");'>삭제</a>")
@@ -180,6 +183,9 @@ $('body,html').keydown(function (e) {
 							
 						var $btnReReply	 = $("<td class='t-c' width='100'>").append("<a href='javascript:void(0)' onclick='ReReplyWriteView(this, "+data[i].replyNo+", \""+data[i].replyContents+"\");'>답글</a>");
 						
+						var loginId = "<%=(String)session.getAttribute("memberId")%>";
+						var memberId = "${board.memberId}";
+						//댓글일때 Status가 'Y'이면 정상출력 / 'N'이면 '삭제된 댓글입니다'메시지 출력 
 						if(data[i].replyOrder == 0){
 							if(data[i].replyStatus=='N')
 								{
@@ -188,21 +194,32 @@ $('body,html').keydown(function (e) {
 								}else{
 							$tr.append($rWriter);
 							$tr.append($rContent);
-							$tr.append($rCreateDate);
+							if(data[i].updateDate==null){
+								$tr.append($rCreateDate);
+							}else{
+								$tr.append($rUpdateDate);
+							}
+							if(loginId==data[i].memberId){
 							$tr.append($btnArea);
+							}
+							if(loginId==memberId){
 							$tr.append($btnReReply);
+							}
 							$tableBody.append($tr);
 								}
-						}else{
-							if(data[i].replyStatus=='N')
+						}else{//대댓글일때는 Status='Y'인것만 보임
+							if(data[i].replyStatus=='Y')//
 							{
-							$tr.append($deleteMsg);
-							$tableBody.append($tr);
-							}else{
 							$tr.append($reWriter);
 							$tr.append($reContent);
-							$tr.append($rCreateDate);
+							if(data[i].updateDate==null){
+								$tr.append($rCreateDate);
+							}else{
+								$tr.append($rUpdateDate);
+							}
+							if(loginId==data[i].memberId){
 							$tr.append($btnArea);
+							}
 							$tr.append("<td></td>");
 							$tableBody.append($tr);
 							}

@@ -43,7 +43,16 @@
 
 <!-- 첨부파일 등록 -->
 <insert id="insertBoardFile">
-	INSERT INTO BOARD_FILE_TBL VALUES(BOARD_FILE_SEQ.NEXTVAL,BOARD_SEQ.CURRVAL,#{fileName},#{fileRename},#{filePath})
+	INSERT INTO BOARD_FILE_TBL VALUES(BOARD_FILE_SEQ.NEXTVAL,
+	<choose>
+	<when test="boardNo==0">
+	BOARD_SEQ.CURRVAL,
+	</when>
+	<otherwise>
+	#{boardNo},
+	</otherwise>
+	</choose>
+	#{fileName},#{fileRename},#{filePath})
 </insert>
 
 <!-- 게시글 수정 -->
@@ -106,7 +115,7 @@ WHERE B.BOARD_NO = #{boardNo}
 	LEFT OUTER JOIN (SELECT F.BOARD_NO, COUNT(BOARD_FILE_NO) AS CNT FROM BOARD_FILE_TBL F GROUP BY F.BOARD_NO) C
 	ON(B.BOARD_NO = C.BOARD_NO)
 	<if test="searchCondition.toString() =='writer'">
-  		WHERE MEMBER_NAME LIKE '%' || #{searchValue} || '%'
+  		WHERE B.MEMBER_ID LIKE '%' || #{searchValue} || '%'
   		</if>
   		<if test="searchCondition.toString() =='title'">
   		WHERE BOARD_TITLE LIKE '%'|| #{searchValue}||  '%'

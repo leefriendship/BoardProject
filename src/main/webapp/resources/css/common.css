@@ -1,3 +1,15 @@
+function viewDetailPage(){
+var loginId = "<%=(String)session.getAttribute("emplId")%>";
+	   var boardNo = $(#boardNoTd).text();
+	   if(!loginId){
+		   alert(boardNo);
+		   
+		}else{
+			location.href="/board/detail.eansoft?boardNo";
+		}
+} 
+
+
 @charset "UTF-8";
 select,
 input,
@@ -38,10 +50,13 @@ select {
 }
 
 button {
-    padding: 6px 10px;
+    padding: 10px;
     font-size: 14px;
     line-height: 1;
     outline: none;
+    border : 1px solid #999;
+    background-color: #fff;
+ 
 }
 
 #gnb{
@@ -120,7 +135,7 @@ button {
 #gnb + #conts {
     position: relative;
     width : 1000px;
-    padding-top: 220px;
+    padding-top: 200px;
     margin :0 auto;
     z-index: 10;
 } 
@@ -180,7 +195,7 @@ button {
 
 .form--srch {
     position: absolute;
-    top: 231px;
+    top: 255px;
     right: 0px;
     display: flex;
     align-items: center;
@@ -222,6 +237,7 @@ button {
     background: url(../img/ic_gnb.png) no-repeat -483px -661px;
     width: 27px;
     height: 27px;
+	border : none;
 }
  
 .section--alert .bg-black,
@@ -233,7 +249,6 @@ button {
     left: 0;
     background-color: rgba(0, 0, 0, .4);  
 } 
-
 .section--alert__conts {
     position: relative;
     width: 90%;
@@ -262,4 +277,27 @@ button {
 
 .t-c {
     text-align: center;
+}
+
+.pointer{
+	cursor:pointer
+}
+
+.shadow {
+    box-shadow: 0 2px 6px rgb(0 0 0 / 10%);
+}
+
+.shadow-darken {
+    box-shadow: 5px 5px 10px -2px rgba(33, 33, 33, .3);
+}
+
+.btn--close {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 60px;
+    height: 60px;
+    padding: 0;
+    background: url("../img/bg_close.png") no-repeat center center/100% auto;
+    border : none;
 }

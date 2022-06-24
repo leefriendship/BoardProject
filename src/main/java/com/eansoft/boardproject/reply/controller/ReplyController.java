@@ -74,7 +74,7 @@ public class ReplyController {
 
 		// 대댓글 작성
 		@ResponseBody
-		@RequestMapping(value = "/register/reReply.ean", method = RequestMethod.POST)
+		@RequestMapping(value = "/register/reReply.eansoft", method = RequestMethod.POST)
 
 		public String addReReply(@ModelAttribute Reply reply, HttpServletRequest request) {
 			HttpSession session = request.getSession();
