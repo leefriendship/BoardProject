@@ -8,10 +8,10 @@
 <c:if test="${empty memberId }">
 <div id="loginDiv">
 <p id="logP"class="t-c">Login</p>
-<form action="/login.eansoft" method="post" >
-<input type="text" name="memberId" placeholder="아이디를 입력해 주세요." autocomplete="off">
-<input type="password" name="memberPwd" placeholder="비밀번호를 입력해 주세요.">
-<button type="submit">로그인</button>
+<form action="/login.eansoft" method="post" id="loginForm" >
+<input type="text" id="memberId" name="memberId" placeholder="아이디를 입력해 주세요." autocomplete="off">
+<input type="password" id="memberPwd" name="memberPwd" placeholder="비밀번호를 입력해 주세요.">
+<button type="button" onclick="loginChk()">로그인</button>
 </form>
 <div id="regA" class="t-c">
 <a id="myLink1" style="text-decoration:underline" href="/member/joinView.eansoft">회원가입</a>&nbsp;&nbsp;
@@ -32,5 +32,30 @@
 <button type="button" onclick="location.href='/logout.eansoft'">로그아웃</button>
 </div>
 </c:if>
+
+		
+
+<script>
+
+function loginChk() {
+    var id = $("#memberId");
+    var pwd = $("#memberPwd");
+    var form = $("#loginForm");
+    if (!id.val()) {
+        alert("아이디를 입력해 주십시오.");
+        id.focus();
+        return;
+    }
+ 
+    if (!pwd.val()) {
+        alert("비밀번호를 입력해 주십시오.");
+        pwd.focus();
+        return;
+    }
+    form.submit();
+}
+
+
+</script>
 </body>
 </html>

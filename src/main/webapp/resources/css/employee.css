@@ -172,3 +172,16 @@ margin : 0;
 	color:red;
 	margin-top:3px;
 }
+
+.idCheckAlert{
+	display : none;
+}
+#availableId{
+	color : green;
+	margin-top:3px;
+}
+
+#unavailableId{
+	color:red;
+	margin-top:3px;
+}

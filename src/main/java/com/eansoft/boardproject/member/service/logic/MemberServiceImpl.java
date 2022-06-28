@@ -31,4 +31,11 @@ public class MemberServiceImpl implements MemberService{
 		return memberData;
 	}
 
+	//id 중복체크
+	@Override
+	public Member idCheck(String memberId) {
+		Member member = mStore.checkId(memberId,sqlSession);
+		return member;
+	}
+
 }

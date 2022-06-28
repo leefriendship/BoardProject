@@ -19,7 +19,7 @@
         crossorigin="anonymous"></script>
 <!-- 브라우저 기본 스타일 리셋하는 CSS -->
 <link rel="stylesheet" href="../../resources/css/reset.css">
-<link rel="stylesheet" href="../../resources/css/common.css?after">
+<link rel="stylesheet" href="../../resources/css/common.css">
 <!-- font -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>

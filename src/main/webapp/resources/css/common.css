@@ -82,7 +82,7 @@ button {
 #gnb nav {
         overflow-y: auto;
         text-align :center;
-        width : 335px;
+        width : 500px;
         margin :0 auto;
         margin-top : 60px;
     }
@@ -132,7 +132,7 @@ button {
     }
 }   
  
-#gnb + #conts {
+#conts {
     position: relative;
     width : 1000px;
     padding-top: 200px;

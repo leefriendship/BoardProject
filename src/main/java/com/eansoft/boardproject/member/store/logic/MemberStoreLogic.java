@@ -23,4 +23,13 @@ public class MemberStoreLogic implements MemberStore{
 		return MemberData;
 	}
 
+	//id check
+	@Override
+	public Member checkId(String memberId, SqlSession sqlSession) {
+		Member member = sqlSession.selectOne("MemberMapper.checkId", memberId);
+		return member;
+	}
+
+
+
 }

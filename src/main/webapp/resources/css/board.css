@@ -268,7 +268,28 @@ button.last {
     margin-right: 6px;
 }
 
+#statisticTable{
+margin :0 auto;
+width : 500px;
+text-align : center;
+border : 1px solid #ccc;
+}
 
+#startDateDiv{
+	margin-left:270px; 
+	display:inline-block;
+	margin-top:50px;
+	margin-bottom:50px;
+}
 
-     
-     
+#endDateDiv{
+	margin-left:15px; 
+	display:inline-block; 
+	margin-top:50px;
+	margin-bottom:50px;
+}  
+
+#statisticBtn{
+	padding :6px;
+	margin-left :15px;
+}

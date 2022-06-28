@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -34,9 +35,21 @@ public class MemberController {
 	//로그인 페이지
 	@RequestMapping(value="/loginView.eansoft", method=RequestMethod.GET)
 	public ModelAndView loginView(ModelAndView mv) {
-		mv.setViewName("member/loginPage");
+		mv.setViewName("redirect:/index.jsp");
 		return mv;
 	}
+	
+	@ResponseBody
+	@RequestMapping(value = "/join/idCheck.eansoft", method = RequestMethod.POST)
+	public String removeReply(@RequestParam("memberId") String memberId) {
+		Member member = mService.idCheck(memberId);
+		if (member!=null) {
+			return "success";
+		} else {
+			return "fail";
+		}
+	} 
+	
 	
 	//회원가입
 	@RequestMapping(value="/register/member.eansoft", method=RequestMethod.POST)
@@ -47,14 +60,14 @@ public class MemberController {
 			if(uploadFile != null && !uploadFile.getOriginalFilename().equals("")) {
 			       HashMap<String, String> fileMap = SaveAttachedFile.saveFile(uploadFile, request); // 업로드한 파일 저장하고 경로 리턴
 			       String filePath = fileMap.get("filePath");
-			       String fileRename = fileMap.get("fileName");
+			       String fileRename = fileMap.get("fileRename");
 			       if(filePath != null && !filePath.equals("")) {
 			          member.setMemberPhoto(fileRename); // 추가
 			       }
 			    }
 			int result = mService.registerMember(member);
 			if(result > 0) {
-				mv.setViewName("redirect:/member/joinView.ean");
+				mv.setViewName("redirect:/index.jsp");
 			}else {
 				mv.setViewName("common/errorPage");
 				mv.addObject("msg","회원가입 실패");
@@ -78,8 +91,9 @@ public class MemberController {
 				session.setAttribute("memberPhoto", memberData.getMemberPhoto());
 				mv.setViewName("redirect:/index.jsp");
 			}else {
-				mv.setViewName("common/errorPage");
-				mv.addObject("msg","로그인 실패");
+				mv.setViewName("common/alert");
+				 mv.addObject("msg", "아이디 또는 비밀번호를 잘못 입력했습니다.");
+		         mv.addObject("url","index.jsp");
 			}
 		}catch(Exception e) {
 			mv.setViewName("common/errorPage");

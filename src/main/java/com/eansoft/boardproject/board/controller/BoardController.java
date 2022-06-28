@@ -43,6 +43,13 @@ public class BoardController {
 		return mv;
 	}
 
+	// 게시글 등록 페이지
+		@RequestMapping(value = "/board/statisticPage.eansoft", method = RequestMethod.GET)
+		public ModelAndView statisticPage(ModelAndView mv) {
+			mv.setViewName("/api/statistic");
+			return mv;
+		}
+	
 	// 게시글 수정 페이지
 	@RequestMapping(value = "/board/modifyPage.eansoft", method = RequestMethod.GET)
 	public ModelAndView modifyBoardPage(ModelAndView mv, @RequestParam("boardNo") int boardNo) {

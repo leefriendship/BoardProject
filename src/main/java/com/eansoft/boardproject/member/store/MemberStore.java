@@ -12,4 +12,7 @@ public interface MemberStore {
 	//로그인
 	Member memberLogin(Member member, SqlSession sqlSession);
 
+	//id체크
+	Member checkId(String memberId, SqlSession sqlSession);
+
 }

@@ -10,4 +10,7 @@ public interface MemberService {
 	//로그인
 	Member loginProcess(Member member);
 
+	//id 중복체크
+	Member idCheck(String memberId);
+
 }

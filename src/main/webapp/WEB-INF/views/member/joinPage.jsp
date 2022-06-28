@@ -1,17 +1,21 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/views/include/inc_head.jsp"%>
-<link rel="stylesheet" href="../../resources/css/employee.css">
+<link rel="stylesheet" href="../../resources/css/employee.css?after">
 </head>
 <body class="page--employee">
 	<%@ include file="/WEB-INF/views/include/inc_header.jsp"%>
 
 <form action="/register/member.eansoft" method="post" id="registerForm" enctype="multipart/form-data">
-<div>아이디 <input type="text" name="memberId"></div>
+<div>아이디 <input type="text" id="memberId" name="memberId">
+<span id="availableId" class="idCheckAlert">사용가능한 ID입니다.</span>
+<span id="unavailableId" class="idCheckAlert">이미 존재하는 ID입니다.</span></div>
+
 <div>비밀번호<input type="password" class="pwd" name="memberPwd" id="memberPwd"></div>
 <div>비밀번호 확인 <input type="password"  class="pwd" id="pwdCheck">
 <span id="eqPwd" class="pwdCheckAlert">비밀번호가 일치합니다.</span>
 <span id="nePwd" class="pwdCheckAlert">비밀번호가 일치하지 않습니다.</span></div>
+
 <div>이름<input type="text" name="memberName"></div>
 <div>프로필 사진
 			<p>
@@ -68,7 +72,27 @@ $('.pwd').focusout(function () {
         }
 });  
 
-        
+
+$('#memberId').change(function () {
+	   var memberId =  $("#memberId").val();
+	    $.ajax({
+			url : "/join/idCheck.eansoft",
+			type : "post",
+			data : {"memberId" : memberId },
+			success : function(data){
+				if(data == "success"){
+					 $("#unavailableId").css('display', 'inline-block');
+		             $("#availableId").css('display', 'none');
+				}else{
+					$("#unavailableId").css('display', 'none');
+		             $("#availableId").css('display', 'inline-block');
+				}
+			},
+			error : function(){
+				alert("오류가 발생했습니다.");	
+			}
+		}); 
+});   
 </script>
 
 </body>
