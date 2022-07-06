@@ -1,15 +1,3 @@
-function viewDetailPage(){
-var loginId = "<%=(String)session.getAttribute("emplId")%>";
-	   var boardNo = $(#boardNoTd).text();
-	   if(!loginId){
-		   alert(boardNo);
-		   
-		}else{
-			location.href="/board/detail.eansoft?boardNo";
-		}
-} 
-
-
 @charset "UTF-8";
 select,
 input,
@@ -82,7 +70,7 @@ button {
 #gnb nav {
         overflow-y: auto;
         text-align :center;
-        width : 500px;
+        width : 700px;
         margin :0 auto;
         margin-top : 60px;
     }

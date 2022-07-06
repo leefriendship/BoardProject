@@ -28,25 +28,34 @@
 					statistic();
 				});
 		
+		
+		//테이블에 데이터 넣기		
 		function statistic(){
 			var startDate = $("#startDate").val();
 			var endDate = $("#endDate").val();
 			$.ajax({
+				//url : "http://192.168.0.76:8888/statistics/count.hirp",
 				url : "http://127.0.0.1:8888/board/statistic.hirp",
 				type : "get",
-				dataType : "json",
-				data : {"startDate" : startDate, "endDate" : endDate},
+				jsonp : "callback",
+				dataType : "jsonp",
+				data: {"startDate" : encodeURI(startDate), "endDate" : encodeURI(endDate)},
 				success : function(data) {
 					var $statisticTable = $("#statisticTable tbody");
-					var $tr = $("<tr>");
 					for (var i = 0; i < data.length; i++) {
+						//내 controller 연결
 						var emplId = data[i].emplId;
 						var statisticCount = data[i].statisticCount;
-						var statisticData = "<tr>" + "<td>" + emplId
-								+ "</td>" + "<td>" + statisticCount
-								+ "</td>" + "</tr>"
+						var statisticData = "<tr>" + "<td>" + emplId + "</td>" + "<td>" + statisticCount + "</td>" + "</tr>" 
+						
+						//민수controller 연결
+						//var projectManager = data[i].projectManager;
+						//var projectManagerCount = data[i].projectManagerCount;
+						//var statisticData = "<tr>" + "<td>" + projectManager + "</td>" + "<td>" + projectManagerCount + "</td>" + "</tr>" 
+						
+						
 						$statisticTable.append(statisticData);
-					}
+					} 
 				},
 				error : function() {
 					alert("Ajax 통신 실패");
@@ -54,7 +63,7 @@
 			})
 		}
 		
-		
+		//테이블 초기화 후 다시 생성
 		function searchStatistic(){
 			var statisticTableBody = $("#statisticTable tbody").children();
 			statisticTableBody.remove();
